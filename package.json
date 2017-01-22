@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/donateoa/jmonitor-interface",
   "dependencies": {
-    "http": "0.0.0",
+    "node-rest-client": "^2.0.1",
     "typescript": "^2.1.5"
   }
 }

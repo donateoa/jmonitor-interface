@@ -1,4 +1,4 @@
-var http =  require("http");
+var Client = require('node-rest-client').Client;
 
 export interface IOptions{
     host:string;
@@ -7,55 +7,65 @@ export interface IOptions{
 }
 export interface IGrabber{
     doGet(options:IOptions, cb): void;
-    doPut(options:IOptions, cb): void;
+    doPut(options:IOptions, data, cb): void;
 }
 
 export class Grabber implements IGrabber{
     constructor(public JmonitorOption:IOptions){};
     doGet = (options:IOptions, cb):void => {
-        var programHandler = (res) => {
-            var str = '';
-            res.on('data', function (chunk) {
-                str += chunk;
-            });
-            res.on("error", function (err) {
-                console.error("http response unhandled error", err);
-                cb(err)
-            });
-            res.on('end', function () {
-                cb(null, str);
-            });
-        };
-
-        let proxy = http.request(options, programHandler);
-
-        proxy.on("error", function (err) {
-            console.error("proxy unhandled error", err);
+        let client = new Client();
+        let req = client.get("http://remote.site/rest/xml/method", function (data, response) {
+            // parsed response body as js object 
+            console.log(data);
+            // raw response 
+            console.log(response);
         });
 
-        proxy.end();
+        req.on('requestTimeout', function (req) {
+            console.log('request has expired');
+            req.abort();
+        });
+        
+        req.on('responseTimeout', function (res) {
+            console.log('response has expired');
+        
+        });
+        
+        //it's usefull to handle request errors to avoid, for example, socket hang up errors on request timeouts 
+        req.on('error', function (err) {
+            console.log('request error', err);
+        });
     };
-    doPut = (options, callback) => {
-            var programHandler = (res) => {
-                var str = '';
-                res.on('data', function (chunk) {
-                    str += chunk;
-                });
-                res.on("error", function (err) {
-                    console.error("http response unhandled error", err);
-                });
-                res.on('end', function () {
-                    callback(null, str);
-                });
+
+    doPut = (options: IOptions, data, callback) => {
+        let client = new Client();
+        var args = {
+                path: { "id": 120 },
+                parameters: { arg1: "hello", arg2: "world" },
+                headers: options.header,
+                data: data
             };
+        let req = client.put(options.host +options.path, args, function (data, response) {
+            // parsed response body as js object 
+            console.log(data);
+            // raw response 
+            console.log(response);
+        });
 
-            let proxy = http.request(options, programHandler);
-
-            proxy.on("error", function (err) {
-                console.error("proxy unhandled error", err);
-            });
-
-            proxy.end();
+        req.on('requestTimeout', function (req) {
+            console.log('request has expired');
+            req.abort();
+        });
+        
+        req.on('responseTimeout', function (res) {
+            console.log('response has expired');
+        
+        });
+        
+        //it's usefull to handle request errors to avoid, for example, socket hang up errors on request timeouts 
+        req.on('error', function (err) {
+            console.log('request error', err);
+        });
         };
 
 }
