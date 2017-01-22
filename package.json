@@ -8,6 +8,18 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "donateoa@gmail.com",
-  "license": "ISC"
+  "author": "alessandro.donateo@gmail.com",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/donateoa/jmonitor-interface.git"
+  },
+  "bugs": {
+    "url": "https://github.com/donateoa/jmonitor-interface/issues"
+  },
+  "homepage": "https://github.com/donateoa/jmonitor-interface",
+  "dependencies": {
+    "http": "0.0.0",
+    "typescript": "^2.1.5"
+  }
 }
