@@ -5,7 +5,10 @@
   "description": "Jmonitor routine and shared classes",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "npm run build:live",
+    "build:live": "nodemon --exec ./node_modules/.bin/ts-node -- ./index.ts",
+    "pretest": "tsc test/*test.ts --module commonjs",
+    "test": "mocha"
   },
   "keywords": [],
   "author": "alessandro.donateo@gmail.com",
@@ -20,6 +23,12 @@
   "homepage": "https://github.com/donateoa/jmonitor-interface",
   "dependencies": {
     "node-rest-client": "^2.0.1",
+    "typescript": "^2.1.5"
+  },
+  "devDependencies": {
+    "@types/node": "^7.0.1",
+    "nodemon": "^1.11.0",
+    "ts-node": "^2.0.0",
     "typescript": "^2.1.5"
   }
 }
