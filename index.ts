@@ -1,3 +1,4 @@
+//require rest for Grabber Class;
 var Client = require('node-rest-client').Client;
 
 export interface IOptions{
